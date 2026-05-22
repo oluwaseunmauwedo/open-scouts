@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { safeRedirectPath } from "@/lib/utils";
 import Button from "@/components/shared/button/Button";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import posthog from "posthog-js";
@@ -10,7 +11,7 @@ import posthog from "posthog-js";
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/";
+  const redirectTo = safeRedirectPath(searchParams.get("redirectTo"));
   const pendingQuery = searchParams.get("pendingQuery") || "";
 
   const [isLogin, setIsLogin] = useState(true);

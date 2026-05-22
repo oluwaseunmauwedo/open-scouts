@@ -3,11 +3,12 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { supabaseServer } from "@/lib/supabase/server";
 import { createFirecrawlKeyForUser } from "@/lib/firecrawl-partner";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { safeRedirectPath } from "@/lib/utils";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const redirectTo = searchParams.get("redirectTo") || "/";
+  const redirectTo = safeRedirectPath(searchParams.get("redirectTo"));
   const pendingQuery = searchParams.get("pendingQuery") || "";
 
   if (code) {
